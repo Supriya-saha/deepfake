@@ -21,7 +21,7 @@ for param in clipmodel.parameters():
     param.requires_grad = False
 
 # Load a feature extractor from the transformers library
-feature_extractor = AutoFeatureExtractor.from_pretrained("./swin-base-patch4-window7-224")
+feature_extractor = AutoFeatureExtractor.from_pretrained("microsoft/swin-base-patch4-window7-224")
 token = BertTokenizer.from_pretrained('bert-base-chinese')
 
 
@@ -50,7 +50,7 @@ class twitter_dataset(data.Dataset):
         self.label_dict = []
         self.swin = feature_extractor
         self.preprocess = preprocess
-        self.local_path = '/home/yutao/MMFN/dataset/twitter_dataset'
+        self.local_path = './dataset/twitter'
         # Read CSV file to populate label_dict
         gc = pandas.read_csv(self.local_path + '/{}_tweets_preprocess.csv'.format('train' if is_train else 'test'))
         # gc = gc[:100]

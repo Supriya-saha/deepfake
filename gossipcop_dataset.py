@@ -20,7 +20,7 @@ for param in clipmodel.parameters():
     param.requires_grad = False
 
 # Load a feature extractor from the transformers library
-feature_extractor = AutoFeatureExtractor.from_pretrained("./swin-base-patch4-window7-224")
+feature_extractor = AutoFeatureExtractor.from_pretrained("microsoft/swin-base-patch4-window7-224")
 token = BertTokenizer.from_pretrained('bert-base-chinese')
 
 

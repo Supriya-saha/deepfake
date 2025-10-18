@@ -7,19 +7,20 @@ from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
 
 pandas.set_option('display.max_columns', None)
-path = '/home/yutao/MMFN/dataset/twitter_dataset'
+path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'dataset', 'twitter')
 # print path to check if it is correct
 print(os.getcwd())
+print(f"Dataset path: {path}")
 # Read the CSV file
-train_data = pd.read_csv(path + '/train' + '/train_tweets.txt', sep='\t', header=0)
-test_data = pd.read_csv(path + '/test' + '/test_tweets.txt', sep='\t', header=0)
+train_data = pd.read_csv(os.path.join(path, 'train_posts.txt'), sep='\t', header=0)
+test_data = pd.read_csv(os.path.join(path, 'test_posts.txt'), sep='\t', header=0)
 # print(train_data.head(
 #
 # ))
 print(test_data)
 # 查询图片是否存在
-image_train_path = path + '/train' + '/all_images'
-image_test_path = path + '/test' + '/all_images'
+image_train_path = os.path.join(path, 'images_train')
+image_test_path = os.path.join(path, 'images_test')
 # 将文件夹中所有图片放在一个文件夹中
 # import shutil
 
@@ -67,17 +68,17 @@ video_names = ['syrianboy_1', 'varoufakis_1']
 
 # 查询图片是否存在
 def check_and_update_image(row, image_path):
-    images_list = row['imageId(s)'].split(',')
+    images_list = row['image_id'].split(',')
     image_name = images_list[0].strip()  # 仅保留第一张图片
     jpg_path = os.path.join(image_path, image_name + '.jpg')
     png_path = os.path.join(image_path, image_name + '.png')
-    if row['imageId(s)'] in video_names:
+    if row['image_id'] in video_names:
         row['has_image'] = 0
         row['is_video'] = 1
     if os.path.exists(jpg_path):
-        row['imageId(s)'] = jpg_path
+        row['image_id'] = jpg_path
     elif os.path.exists(png_path):
-        row['imageId(s)'] = png_path
+        row['image_id'] = png_path
     else:
         row['has_image'] = 0
 
@@ -92,9 +93,9 @@ def is_english(text):
 
 
 # 检查并更新 train_data 和 test_data 的图像路径
-train_data = train_data[train_data['tweetText'].apply(is_english)].apply(check_and_update_image, axis=1,
+train_data = train_data[train_data['post_text'].apply(is_english)].apply(check_and_update_image, axis=1,
                                                                          image_path=image_train_path)
-test_data = test_data[test_data['tweetText'].apply(is_english)].apply(check_and_update_image, axis=1,
+test_data = test_data[test_data['post_text'].apply(is_english)].apply(check_and_update_image, axis=1,
                                                                       image_path=image_test_path)
 train_data = train_data[train_data['has_image'] == 1]
 test_data = test_data[test_data['has_image'] == 1]

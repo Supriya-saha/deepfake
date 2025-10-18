@@ -8,8 +8,8 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from MMFN import MultiModal
 from tqdm import tqdm
-from myweibo_dataset import *
-from gossipcop_dataset import *
+# from myweibo_dataset import *
+# from gossipcop_dataset import *
 from twitter_dataset import *
 
 # Set logging verbosity to warning and error levels for transformers
@@ -31,12 +31,12 @@ def train():
     patience_counter = 0
 
     # Load training and validation datasets
-    # train_set = twitter_dataset(is_train=True)
-    # validate_set = twitter_dataset(is_train=False)
+    train_set = twitter_dataset(is_train=True)
+    validate_set = twitter_dataset(is_train=False)
     # train_set = weibo_dataset(is_train=True)
     # validate_set = weibo_dataset(is_train=False)
-    train_set = gossipcop_dataset(is_train=True)
-    validate_set = gossipcop_dataset(is_train=False)
+    # train_set = gossipcop_dataset(is_train=True)
+    # validate_set = gossipcop_dataset(is_train=False)
 
     # Create data loaders for training and testing
     train_loader = DataLoader(
